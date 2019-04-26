@@ -81,7 +81,7 @@ Public Class Screensaver
         mandelbrotShader.SetVec3("iResolution", resolution)
         mandelbrotShader.SetFloat("iTime", time)
         mandelbrotShader.SetInt("zoomPointSeed", zoomPointSeed)
-        mandelbrotShader.SetInt("selectedPalette", 1)
+        mandelbrotShader.SetInt("selectedPalette", 4)
 
         screenQuadRenderer.Render()
 
