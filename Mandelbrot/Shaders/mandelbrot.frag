@@ -92,7 +92,7 @@ void main() {
 
 	for (int m = 0; m < AA; ++m) {
 		for (int n = 0; n < AA; ++n) {
-			int currentZoomPointIndex = int(mod(iTime / (2 * M_PI / zoomFrequencyModifier) + zoomPointSeed, NUM_FRACTAL_ZOOM_POINTS));
+			int currentZoomPointIndex = int(mod((iTime / (2 * M_PI / zoomFrequencyModifier)) + zoomPointSeed, NUM_FRACTAL_ZOOM_POINTS));
 			FractalZoomPoint currZoomPoint = fractalZoomingPathway[currentZoomPointIndex];
 
 			
