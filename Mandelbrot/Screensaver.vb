@@ -3,8 +3,27 @@ Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL4
 Imports OpenTK.Input
 
+Imports System.Runtime.InteropServices
+Imports System.Drawing
+
 Public Class Screensaver
     Inherits GameWindow
+
+    <DllImport("user32.dll")>
+    Shared Function SetParent(hWndChild As IntPtr, hWndNewParent As IntPtr) As IntPtr
+    End Function
+
+    <DllImport("user32.dll")>
+    Shared Function SetWindowLong(hWnd As IntPtr, nIndex As Integer, dwNewLong As IntPtr) As Integer
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Shared Function GetWindowLong(hWnd As IntPtr, nIndex As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll")>
+    Shared Function GetClientRect(hWnd As IntPtr, ByRef lpRect As Rectangle) As Boolean
+    End Function
 
     Private time As Double
 
@@ -16,18 +35,50 @@ Public Class Screensaver
 
     Private Const NUM_FRACTAL_ZOOM_POINTS As Integer = 5
 
-    Public Sub New()
-        MyBase.New(DisplayDevice.Default.Width, DisplayDevice.Default.Height,
+    Private screensaverPreviewMode As Boolean
+
+    Public Sub New(w As Integer, h As Integer,
+                   previewMode As Boolean,
+                   previewWinHandle As IntPtr,
+                   Optional gameWindowFlags As GameWindowFlags = GameWindowFlags.Default)
+
+        MyBase.New(w, h,
                    GraphicsMode.Default,
                    "Screensaver",
-                   GameWindowFlags.Default,
+                   gameWindowFlags,
                    DisplayDevice.Default, 4, 4,
-                   GraphicsContextFlags.Debug)
+                   GraphicsContextFlags.Default)
         VSync = VSyncMode.On
-        prevMouseX = 0
-        prevMouseY = 0
         time = 0
+        screensaverPreviewMode = previewMode
+        WindowBorder = WindowBorder.Hidden
+
+        If gameWindowFlags = GameWindowFlags.Fullscreen Then
+            CursorVisible = False
+        End If
+
+        If previewMode And previewWinHandle <> IntPtr.Zero Then
+            PreparePreviewMode(previewWinHandle)
+        End If
+
         zoomPointSeed = New Random().Next() Mod NUM_FRACTAL_ZOOM_POINTS
+    End Sub
+
+    Private Sub PreparePreviewMode(previewWinHandle As IntPtr)
+        ' Set the preview window as the parent of this window
+        SetParent(WindowInfo.Handle, previewWinHandle)
+
+        ' Make this a child window so that it will close when the parent dialog closes
+        ' GWL_STYLE = -16, WS_CHILD = 0x40000000
+        SetWindowLong(WindowInfo.Handle, -16, New IntPtr(GetWindowLong(WindowInfo.Handle, -16) Or &H40000000))
+
+        ' Place our window inside the parent
+        Dim parentRectangle As Rectangle
+        GetClientRect(previewWinHandle, parentRectangle)
+        Width = parentRectangle.Width
+        Height = parentRectangle.Height
+        Size = parentRectangle.Size
+        Location = New Point(0, 0)
     End Sub
 
     Protected Overrides Sub OnLoad(e As EventArgs)
@@ -37,35 +88,38 @@ Public Class Screensaver
 
         mandelbrotShader = New Shader("mandelbrot.vert", "mandelbrot.frag")
         screenQuadRenderer = New ScreenQuadRenderer()
+
+        mouseLocInitialized = False
     End Sub
 
     Protected Overrides Sub OnResize(e As EventArgs)
         GL.Viewport(0, 0, Width, Height)
     End Sub
 
-    Private prevMouseX As Integer
-    Private prevMouseY As Integer
+    Private mouseLoc As New Vector2()
+    Dim mouseLocInitialized As Boolean = False
     Protected Overrides Sub OnUpdateFrame(e As FrameEventArgs)
         MyBase.OnUpdateFrame(e)
 
         Dim cursorState = Mouse.GetCursorState
 
         ' If mouse is moved, close screensaver
-        'If prevMouseX <> cursorState.X Or prevMouseY <> cursorState.Y _
-        '       And prevMouseX <> 0 Or prevMouseY <> 0 Then
-        '   [Exit]()
-        'End If
-        prevMouseX = cursorState.X
-        prevMouseY = cursorState.Y
+        If (Math.Abs(mouseLoc.X - cursorState.X) > 5 Or Math.Abs(mouseLoc.Y - cursorState.Y) > 5) _
+                   And mouseLocInitialized And Not screensaverPreviewMode Then
+            [Exit]()
+        End If
+        mouseLoc.X = cursorState.X
+        mouseLoc.Y = cursorState.Y
+        mouseLocInitialized = True
 
         ' If any key is pressed, close screensaver
-        'HandleKeyboard()
+        HandleKeyboard()
     End Sub
 
     Private Sub HandleKeyboard()
         Dim keyState = Keyboard.GetState()
 
-        If keyState.IsAnyKeyDown Then
+        If keyState.IsAnyKeyDown And Not screensaverPreviewMode Then
             [Exit]()
         End If
     End Sub
@@ -73,15 +127,15 @@ Public Class Screensaver
     Protected Overrides Sub OnRenderFrame(e As FrameEventArgs)
         MyBase.OnRenderFrame(e)
 
-        time += e.Time
+        time += e.Time * ConfigManager.Instance.Speed
 
-        Dim resolution As Vector3 = New Vector3(DisplayDevice.Default.Width, DisplayDevice.Default.Height, 1.0)
+        Dim resolution As Vector3 = New Vector3(Width, Height, 1.0)
         mandelbrotShader.Use()
 
         mandelbrotShader.SetVec3("iResolution", resolution)
         mandelbrotShader.SetFloat("iTime", time)
         mandelbrotShader.SetInt("zoomPointSeed", zoomPointSeed)
-        mandelbrotShader.SetInt("selectedPalette", 4)
+        mandelbrotShader.SetInt("selectedPalette", ConfigManager.Instance.PaletteSelected)
 
         screenQuadRenderer.Render()
 

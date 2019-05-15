@@ -112,7 +112,7 @@ void main() {
 	
 			float iter = iterateMandelbrot(c);
 	
-			color += palette1(iter); // Color the fractal
+			color += palette(iter); // Color the fractal
 			
 		}
 	}
