@@ -51,5 +51,7 @@ Public Class ConfigurationWindow
 
     Private Sub SpeedSlider_ValueChanged(sender As Object, e As Windows.RoutedPropertyChangedEventArgs(Of Double)) Handles speedSlider.ValueChanged
         savedSettings = False
+
+        speedLabel.Content = "Speed (Value: " & String.Format("{0:0.00}", speedSlider.Value) & "):"
     End Sub
 End Class
