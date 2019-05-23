@@ -49,6 +49,8 @@
         </ComboBox>
         <Slider x:Name="speedSlider" HorizontalAlignment="Left" Height="30" Margin="338,395,0,0" VerticalAlignment="Top" Width="421" Minimum="-5" Maximum="5" SmallChange="1"/>
         <Button x:Name="saveButton" Content="Save Settings" HorizontalAlignment="Left" Margin="300,487,0,0" VerticalAlignment="Top" Width="200" Height="39" FontSize="20"/>
+        <Label x:Name="resolutionLabel" Content="Resolution Ratio (Value: 1:1):" HorizontalAlignment="Left" Height="41" Margin="63,331,0,0" VerticalAlignment="Top" Width="235" FontSize="16"/>
+        <Slider x:Name="resolutionSlider" IsSnapToTickEnabled="True" Value="1" HorizontalAlignment="Left" Height="30" Margin="338,342,0,0" VerticalAlignment="Top" Width="421" Maximum="16" SmallChange="1" Cursor="" Minimum="1"/>
 
     </Grid>
 </Window>

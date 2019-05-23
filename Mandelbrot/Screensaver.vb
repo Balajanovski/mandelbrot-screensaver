@@ -29,6 +29,8 @@ Public Class Screensaver
 
     Private mandelbrotShader As Shader
     Private screenQuadRenderer As ScreenQuadRenderer
+    Private offscreenRenderBuffer As OffscreenRenderBuffer
+    Private textureBlitShader As Shader
 
     ' Randomises the zoom point the screensaver starts on
     Private zoomPointSeed As Integer
@@ -86,8 +88,11 @@ Public Class Screensaver
 
         GL.ClearColor(0.0, 0.0, 0.0, 0.0)
 
-        mandelbrotShader = New Shader("mandelbrot.vert", "mandelbrot.frag")
+        mandelbrotShader = New Shader("ScreenQuadRenderer.vert", "mandelbrot.frag")
         screenQuadRenderer = New ScreenQuadRenderer()
+        offscreenRenderBuffer = New OffscreenRenderBuffer(Width * ConfigManager.Instance.ResolutionRatio,
+                                                          Height * ConfigManager.Instance.ResolutionRatio)
+        textureBlitShader = New Shader("ScreenQuadRenderer.vert", "BlitTextureToScreen.frag")
 
         mouseLocInitialized = False
     End Sub
@@ -129,13 +134,26 @@ Public Class Screensaver
 
         time += e.Time * ConfigManager.Instance.Speed
 
-        Dim resolution As Vector3 = New Vector3(Width, Height, 1.0)
+        ' Draw fractal to offscreen buffer
+        Dim resolution As Vector3 = New Vector3(Width * ConfigManager.Instance.ResolutionRatio,
+                                                Height * ConfigManager.Instance.ResolutionRatio, 1.0)
         mandelbrotShader.Use()
 
         mandelbrotShader.SetVec3("iResolution", resolution)
         mandelbrotShader.SetFloat("iTime", time)
         mandelbrotShader.SetInt("zoomPointSeed", zoomPointSeed)
         mandelbrotShader.SetInt("selectedPalette", ConfigManager.Instance.PaletteSelected)
+
+        offscreenRenderBuffer.Bind()
+        screenQuadRenderer.Render()
+        offscreenRenderBuffer.UnBind()
+
+        ' Draw the scaled offscreen buffer to the screen
+        ' This is done so that the resolution of the screensaver may be adjusted
+        textureBlitShader.Use()
+        textureBlitShader.SetInt("textureToDraw", 0)
+        GL.ActiveTexture(TextureUnit.Texture0)
+        GL.BindTexture(TextureTarget.Texture2D, offscreenRenderBuffer.currentFrame)
 
         screenQuadRenderer.Render()
 

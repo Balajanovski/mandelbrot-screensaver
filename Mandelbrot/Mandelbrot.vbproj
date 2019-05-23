@@ -109,6 +109,7 @@
     <Compile Include="ConfigurationWindow.xaml.vb">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OffscreenRenderBuffer.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -127,6 +128,7 @@
     </Compile>
     <Compile Include="ScreenQuadRenderer.vb" />
     <Compile Include="Screensaver.vb" />
+    <Compile Include="Util\FrameBufferComponentBase.vb" />
     <Compile Include="Util\Shader.vb" />
     <Compile Include="Util\ShaderBase.vb" />
   </ItemGroup>
@@ -154,7 +156,8 @@
     </None>
     <None Include="packages.config" />
     <EmbeddedResource Include="Shaders\mandelbrot.frag" />
-    <EmbeddedResource Include="Shaders\mandelbrot.vert" />
+    <EmbeddedResource Include="Shaders\ScreenQuadRenderer.vert" />
+    <EmbeddedResource Include="Shaders\BlitTextureToScreen.frag" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ConfigurationWindow.xaml">
