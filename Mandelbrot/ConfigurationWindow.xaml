@@ -3,54 +3,82 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:p = "clr-namespace:Mandelbrot.My.Resources"
              xmlns:local="clr-namespace:Mandelbrot"
              mc:Ignorable="d" 
-             Title="Tranquility Screensaver Suite - Mandelbrot Screensaver Settings"
+             Title="{x:Static p:Locale.Title}"
              SizeToContent="Width"
              ResizeMode="NoResize"
              WindowStartupLocation="CenterScreen"
              Closing="Window_Closing"
              d:DesignHeight="600" d:DesignWidth="800">
+
     <Grid>
         <Image x:Name="title" HorizontalAlignment="Left" Height="200" Margin="0,0,0,0" VerticalAlignment="Top" Width="800" Source="pack://application:,,,/Resources/SettingsLogo.png" Stretch="Fill"/>
-        <Label x:Name="label" Content="Palette Selected: " HorizontalAlignment="Left" Height="40" Margin="63,263,0,0" VerticalAlignment="Top" Width="185" FontSize="24"/>
-        <Label x:Name="speedLabel" Content="Speed (Value: 0):" HorizontalAlignment="Left" Height="41" Margin="63,384,0,0" VerticalAlignment="Top" Width="235" FontSize="24"/>
+        <Viewbox Margin="63,263,546,268" Height="40" Width="185" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock x:Name="paletteLabel" Text="{x:Static p:Locale.PaletteSelectedLabel}" HorizontalAlignment="Left" VerticalAlignment="Top"  FontSize="24"/>
+        </Viewbox>
+        <Viewbox Height="41" Width="235" Margin="63,384,496,146" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock x:Name="speedLabel" Text="Speed (Value: 0):" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18"/>
+        </Viewbox>
+        <Viewbox Height="41" Width="235" Margin="63,331,496,199" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock x:Name="resolutionLabel" Text="Resolution Ratio (Value: 1:1):" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16"/>
+        </Viewbox>
+
         <ComboBox x:Name="paletteSelector" HorizontalAlignment="Left" Height="40" Margin="338,263,0,0" VerticalAlignment="Top" Width="421" IsReadOnly="True" SelectedIndex="0" FontSize="18">
             <ComboBoxItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="#FF4387FF">Palette 1</TextBlock>
+                    <TextBlock Foreground="#FF4387FF" Text="{x:Static p:Locale.Palette}"></TextBlock>
+                    <TextBlock Foreground="#FF4387FF" Text=" 1"></TextBlock>
                 </StackPanel>
             </ComboBoxItem>
             <ComboBoxItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="#FFF9D79C">Palette 2</TextBlock>
+                    <TextBlock Foreground="#FFF9D79C" Text="{x:Static p:Locale.Palette}"></TextBlock>
+                    <TextBlock Foreground="#FFF9D79C" Text=" 2"></TextBlock>
                 </StackPanel>
             </ComboBoxItem>
             <ComboBoxItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="#FFFF37FF">Palette 3</TextBlock>
+                    <TextBlock Foreground="#FFFF37FF" Text="{x:Static p:Locale.Palette}"></TextBlock>
+                    <TextBlock Foreground="#FFFF37FF" Text=" 3"></TextBlock>
                 </StackPanel>
             </ComboBoxItem>
             <ComboBoxItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="#FFFF9700">Palette 4</TextBlock>
+                    <TextBlock Foreground="#FFFF9700" Text="{x:Static p:Locale.Palette}"></TextBlock>
+                    <TextBlock Foreground="#FFFF9700" Text=" 4"></TextBlock>
                 </StackPanel>
             </ComboBoxItem>
             <ComboBoxItem Background="White">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="#FF00F3FF">Palette 5</TextBlock>
+                    <TextBlock Foreground="#FF00F3FF" Text="{x:Static p:Locale.Palette}"></TextBlock>
+                    <TextBlock Foreground="#FF00F3FF" Text=" 5"></TextBlock>
                 </StackPanel>
             </ComboBoxItem>
             <ComboBoxItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="#FF0CFF00">Palette 6</TextBlock>
+                    <TextBlock Foreground="#FF0CFF00" Text="{x:Static p:Locale.Palette}"></TextBlock>
+                    <TextBlock Foreground="#FF0CFF00" Text=" 6"></TextBlock>
                 </StackPanel>
             </ComboBoxItem>
         </ComboBox>
         <Slider x:Name="speedSlider" HorizontalAlignment="Left" Height="30" Margin="338,395,0,0" VerticalAlignment="Top" Width="421" Minimum="-5" Maximum="5" SmallChange="1"/>
-        <Button x:Name="saveButton" Content="Save Settings" HorizontalAlignment="Left" Margin="300,487,0,0" VerticalAlignment="Top" Width="200" Height="39" FontSize="20"/>
-        <Label x:Name="resolutionLabel" Content="Resolution Ratio (Value: 1:1):" HorizontalAlignment="Left" Height="41" Margin="63,331,0,0" VerticalAlignment="Top" Width="235" FontSize="16"/>
+        <Button x:Name="saveButton" Content="{x:Static p:Locale.SaveSettings}" HorizontalAlignment="Left" Margin="260,487,0,0" VerticalAlignment="Top" Width="240" Height="39" FontSize="20"/>
         <Slider x:Name="resolutionSlider" IsSnapToTickEnabled="True" Value="1" HorizontalAlignment="Left" Height="30" Margin="338,342,0,0" VerticalAlignment="Top" Width="421" Maximum="16" SmallChange="1" Cursor="" Minimum="1"/>
+
+        <ComboBox x:Name="languageBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="10,10,0,0" IsReadOnly="True" SelectedIndex="0">
+            <ComboBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="en"></TextBlock>
+                </StackPanel>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="ru-RU"></TextBlock>
+                </StackPanel>
+            </ComboBoxItem>
+        </ComboBox>
 
     </Grid>
 </Window>
