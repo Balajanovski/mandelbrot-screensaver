@@ -128,7 +128,7 @@
     <value>Выбранная Палитра:</value>
   </data>
   <data name="ResolutionRatioLabel" xml:space="preserve">
-    <value>Коэффициент Разрешения (Значение: </value>
+    <value>Коэффициент Разрешения (Значение: 1:</value>
   </data>
   <data name="SpeedLabel" xml:space="preserve">
     <value>Скорость (Значение: </value>

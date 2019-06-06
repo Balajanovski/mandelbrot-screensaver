@@ -128,7 +128,7 @@ Are you sure you want to proceed?</value>
     <value>Palette Selected:</value>
   </data>
   <data name="ResolutionRatioLabel" xml:space="preserve">
-    <value>Resolution Ratio (Value: </value>
+    <value>Resolution Ratio (Value: 1:</value>
   </data>
   <data name="SpeedLabel" xml:space="preserve">
     <value>Speed (Value: </value>
