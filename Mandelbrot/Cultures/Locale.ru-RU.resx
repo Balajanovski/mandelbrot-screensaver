@@ -122,24 +122,24 @@
 Вы уверены, что хотите продолжить?</value>
   </data>
   <data name="ExitWithoutSavingTitle" xml:space="preserve">
-    <value>Выход без сохранения?</value>
+    <value>Выйти Без Сохранения?</value>
   </data>
   <data name="PaletteSelectedLabel" xml:space="preserve">
-    <value>Выбранная палитра:</value>
+    <value>Выбранная Палитра:</value>
   </data>
   <data name="ResolutionRatioLabel" xml:space="preserve">
-    <value>Коэффициент разрешения (значение: </value>
+    <value>Коэффициент Разрешения (Значение: </value>
   </data>
   <data name="SpeedLabel" xml:space="preserve">
     <value>Скорость (Значение: </value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Tranquility Screensaver Suite - Настройки заставки Мандельброта</value>
+    <value>Tranquility Screensaver Suite - Настройки Заставки Мандельброта</value>
   </data>
   <data name="Palette" xml:space="preserve">
-    <value>палитра</value>
+    <value>Палитра</value>
   </data>
   <data name="SaveSettings" xml:space="preserve">
-    <value>Сохранить настройки</value>
+    <value>сохранить настройки</value>
   </data>
 </root>
